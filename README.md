@@ -17,7 +17,7 @@
 1. Clone this repository.
    `git clone git@github.com:Skyngexe/fda_nda_scraper.git`
 3. Install the required dependencies listed in requirements.txt.
-4. Set up a [MongoDB database] (https://www.mongodb.com/) and update the connection URI in the .env file.
+4. Set up a [MongoDB database](https://www.mongodb.com/) and update the connection URI in the .env file.
 5. Run the main.py script to start scraping and saving data.
 
 Contributors:
