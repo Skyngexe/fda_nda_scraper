@@ -11,22 +11,40 @@ from dotenv import load_dotenv
 
 class Scraper:
 
+    """
+        A class for web scraping historical data and saving it to a MongoDB database.
+    """
+
     def __init__(self):
         # Initialize Web Driver
         self.driver = webdriver.Firefox()
 
     def load_webpage(self, url):
+        """
+        Load a webpage in the web driver.
+
+        Parameters:
+        url (str): The URL of the webpage to load.
+        """
         self.driver.get(url)
         toggle = self.driver.find_element(By.CLASS_NAME, 'toggle')
         toggle.click()
 
     def click_element(self, element):
+        """
+        Click on a specified web element.
+
+        Parameters:
+        element: The web element to click.
+        """
         element.click()
 
     def scrape_table_columns(self):
         """
-        scrape and create header row for column names
-        :return: list
+        Scrape and create a header row for column names.
+
+        Returns:
+        list: A list of column names.
         """
         wrapper = self.driver.find_element(By.ID, 'example_1_wrapper')
         table = wrapper.find_element(By.ID, 'example_1')
@@ -36,8 +54,10 @@ class Scraper:
 
     def get_curr_scraping_year_month(self):
         """
-        scrape and find current scrapping year and month
-        :return: string, string
+        Scrape and find the current scraping year and month.
+
+        Returns:
+        tuple: A tuple containing the current year and month.
         """
         date = self.driver.find_element(By.XPATH, '/html/body/div[2]/div/main/article/div/form/h4')
         html_code = date.get_attribute('outerHTML')
@@ -49,9 +69,11 @@ class Scraper:
 
     def scrape_historical_data(self, target_year, target_month):
         """
-        :param target_year: string
-        :param target_month:
-        :return:
+        Scrape historical data for a target year and month.
+
+        Parameters:
+        target_year (str): The target year for scraping.
+        target_month (str): The target month for scraping.
         """
 
         try:
@@ -91,6 +113,15 @@ class Scraper:
             self.driver.quit()
 
     def scrapping_function(self, columns):
+        """
+        Scrape data from a table on the webpage based on the provided columns.
+
+        Parameters:
+        columns (list): A list of column names to match the data against.
+
+        Returns:
+        pd.DataFrame: A pandas DataFrame containing the scraped data.
+        """
         wrapper = self.driver.find_element(By.ID, 'example_1_wrapper')
         table = wrapper.find_element(By.ID, 'example_1')
         table_rows = table.find_element(By.TAG_NAME, 'tbody').find_elements(By.TAG_NAME, 'td')
@@ -113,6 +144,13 @@ class Scraper:
 
     @staticmethod
     def save_data(dataframe, filename):
+        """
+        Store data in a MongoDB database.
+
+        Parameters:
+        dataframe (pd.DataFrame): The pandas DataFrame containing the data to be saved.
+        filename (str): The name of the CSV file to save the data to.
+        """
         script_dir = os.path.dirname(os.path.abspath(__file__))
         file_path = os.path.join(script_dir, filename)
         dataframe.to_csv(file_path, index=False)
@@ -120,9 +158,18 @@ class Scraper:
 
 
 class DataBase:
-
+    """
+        A class for interacting with a MongoDB database.
+    """
     @staticmethod
     def create_db(data):
+        """
+        Save data to a CSV file and store it in a MongoDB database.
+
+        Parameters:
+        dataframe (pd.DataFrame): The pandas DataFrame containing the data to be saved.
+        filename (str): The name of the CSV file to save the data to.
+        """
         # Access the MongoDB connection URI
         load_dotenv(dotenv_path="os.env")
         mongo_url = os.getenv('MONGO_URI')
