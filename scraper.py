@@ -17,7 +17,9 @@ class Scraper:
 
     def __init__(self):
         # Initialize Web Driver
-        self.driver = webdriver.Firefox()
+        opts = webdriver.FirefoxOptions()
+        opts.add_argument("--headless")
+        self.driver = webdriver.Firefox(options=opts)
 
     def load_webpage(self, url):
         """
@@ -112,6 +114,40 @@ class Scraper:
         finally:
             self.driver.quit()
 
+    def scrape_latest_data(self):
+        """
+        Scrape latest data
+        """
+        try:
+            print("Initiating web scraping...")
+            self.load_webpage("https://www.accessdata.fda.gov/scripts/cder/daf/index.cfm")
+            checkbox = self.driver.find_element(By.ID, 'OriginalNewDrugApprovals')
+            self.click_element(checkbox)
+
+            search_button = self.driver.find_element(By.XPATH, '/html/body/div[2]/div/main/article/div/div[5]/div[2]/div/form')
+            search_button.submit()
+
+            old_url = self.driver.current_url
+            WebDriverWait(self.driver, 10).until(lambda driver: old_url != driver.current_url)
+            self.driver.implicitly_wait(5)
+
+            dfs = []
+            columns = self.scrape_table_columns()
+            print("Webpage loaded successfully.")
+            month, year = self.get_curr_scraping_year_month()
+            print(f"currently scraping {month, year}")
+            dfs.append(self.scrapping_function(columns))
+
+            large_df = pd.concat(dfs, ignore_index=True)
+
+            Scraper.save_data(large_df, "output.csv")
+
+        except Exception as e:
+            print(f"An error occurred during scraping: {e}")
+
+        finally:
+            self.driver.quit()
+
     def scrapping_function(self, columns):
         """
         Scrape data from a table on the webpage based on the provided columns.
@@ -149,11 +185,7 @@ class Scraper:
 
         Parameters:
         dataframe (pd.DataFrame): The pandas DataFrame containing the data to be saved.
-        filename (str): The name of the CSV file to save the data to.
         """
-        script_dir = os.path.dirname(os.path.abspath(__file__))
-        file_path = os.path.join(script_dir, filename)
-        dataframe.to_csv(file_path, index=False)
         DataBase.create_db(dataframe)
 
 
@@ -164,7 +196,7 @@ class DataBase:
     @staticmethod
     def create_db(data):
         """
-        Save data to a CSV file and store it in a MongoDB database.
+        Save data in a MongoDB database.
 
         Parameters:
         dataframe (pd.DataFrame): The pandas DataFrame containing the data to be saved.
@@ -188,4 +220,5 @@ class DataBase:
 
 
 scraper = Scraper()
-scraper.scrape_historical_data('2000', 'January')
+#scraper.scrape_historical_data('2000', 'January')
+scraper.scrape_latest_data()
