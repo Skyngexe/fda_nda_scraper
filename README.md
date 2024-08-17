@@ -1,6 +1,6 @@
 # Automated FDA NDA Scraping Pipeline
 
-## This Python project is a specialized web scraper that extracts information on novel drug approvals from the [FDA website](https://www.accessdata.fda.gov/scripts/cder/daf/). Novel drug approvals ([NDA](https://www.fda.gov/drugs/types-applications/new-drug-application-nda)) refer to medications that have not been previously authorized, distinguishing this scraper from general drug approval data collectors. The scraper can retrieve both historical data and continuously update with new approvals using gcloud cloud run service. All gathered data is stored in a MongoDB database, ensuring easy access and facilitating further analysis.
+## This Python project is a specialized web scraper that extracts information on novel drug approvals from the [FDA website](https://www.accessdata.fda.gov/scripts/cder/daf/). Novel drug approvals ([NDA](https://www.fda.gov/drugs/development-approval-process-drugs/novel-drug-approvals-fda#:~:text=Novel%20Drug%20Approvals%20at%20FDA%201%20Helping%20Guide,...%205%20Drug%20Approval%20Information%20%28CDER%20only%29%20)) refer to medications that have not been previously authorized, distinguishing this scraper from general drug approval data collectors. The scraper can retrieve both historical data and continuously update with new approvals using gcloud cloud run service. All gathered data is stored in a MongoDB database, ensuring easy access and facilitating further analysis.
 
 ### Key Features:
 - Web Scraping: Automates the extraction of novel drug approval data from the FDA website.
