@@ -15,7 +15,7 @@
 - Pandas
 - MongoDB
 - Docker
-- Cloud computing  
+- Google cloud 
 ## Getting Started (scraping only historical data) 
 1. Clone this repository 
 `git clone git@github.com:Skyngexe/fda_nda_scraper.git`
