@@ -17,17 +17,17 @@
 - Docker
 - Cloud computing  
 ## Getting Started (scraping only historical data) 
-1. Clone this repository \
+1. Clone this repository 
 `git clone git@github.com:Skyngexe/fda_nda_scraper.git`
 3. Install the required dependencies listed in requirements.txt.
 4. Set up a [MongoDB database](https://www.mongodb.com/) and update the connection URI in the os.env file.
 5. Click add IP address in your cluster 
-6. Run the scraper.py script to start scraping and saving data \ (uncomment '#scraper.scrape_historical_data('2000', 'January')' and comment 'scraper.scrape_latest_data()')
+6. Run the scraper.py script to start scraping and saving data  (uncomment `#scraper.scrape_historical_data('2000', 'January')` and comment `scraper.scrape_latest_data()`)
    
 ### Automating Data Scraping on Google Cloud Using Docker: 
 1. Install [Docker Desktop](https://www.docker.com/products/docker-desktop/) and [glcoud CLI](https://cloud.google.com/sdk/docs/install)
-2. Within scraper.py, comment 'scraper.scrape_historical_data('2000', 'January')' and uncomment 'scraper.scrape_latest_data()' 
-3. Run the following command in the terminal within the repository's directory to build the Docker image: \ 
+2. Within scraper.py, comment `scraper.scrape_historical_data('2000', 'January')` and uncomment `scraper.scrape_latest_data()` 
+3. Run the following command in the terminal within the repository's directory to build the Docker image:  
 `docker build . -f dockerfile.txt`
 4. Set up a repository in google cloud's Artifact Repository with a $${\color{lightgreen} PROJECT-ID}$$
 5. Push the Docker Image to Google Container Registry 
