@@ -31,7 +31,7 @@
 `docker build . -f dockerfile.txt`
 4. Set up a repository in google cloud's Artifact Repository with a $${\color{lightgreen} PROJECT-ID}$$
 5. Push the Docker Image to Google Container Registry 
-6. [Create a Cloud Run job wth the Docker Image and schedule trigger](https://cloud.google.com/artifact-registry/docs/docker/pushing-and-pulling#cred-helper) (e.g. daily at 00:00 UTC) \
+6. [Create a Cloud Run job wth the Docker Image and schedule trigger](https://cloud.google.com/artifact-registry/docs/docker/pushing-and-pulling#cred-helper) (e.g. daily at 00:00 UTC) 
 
 Contributors:
 Sky Ng 
