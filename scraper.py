@@ -140,7 +140,7 @@ class Scraper:
 
             large_df = pd.concat(dfs, ignore_index=True)
 
-            Scraper.save_data(large_df, "output.csv")
+            Scraper.save_data(large_df)
 
         except Exception as e:
             print(f"An error occurred during scraping: {e}")
@@ -179,14 +179,14 @@ class Scraper:
         self.click_element(button)
 
     @staticmethod
-    def save_data(dataframe, filename):
+    def save_data(dataframe):
         """
         Store data in a MongoDB database.
 
         Parameters:
         dataframe (pd.DataFrame): The pandas DataFrame containing the data to be saved.
         """
-        DataBase.create_db(dataframe)
+        DataBase.save_df_to_db(dataframe)
 
 
 class DataBase:
@@ -194,13 +194,12 @@ class DataBase:
         A class for interacting with a MongoDB database.
     """
     @staticmethod
-    def create_db(data):
+    def save_df_to_db(data):
         """
         Save data in a MongoDB database.
 
         Parameters:
         dataframe (pd.DataFrame): The pandas DataFrame containing the data to be saved.
-        filename (str): The name of the CSV file to save the data to.
         """
         # Access the MongoDB connection URI
         load_dotenv(dotenv_path="os.env")
