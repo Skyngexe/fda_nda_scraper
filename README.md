@@ -16,7 +16,7 @@
 - MongoDB
 - Docker
 - Google cloud 
-## Getting Started (scraping only historical data) 
+### Getting Started (scraping only historical data) 
 1. Clone this repository 
 `git clone git@github.com:Skyngexe/fda_nda_scraper.git`
 3. Install the required dependencies listed in requirements.txt.
