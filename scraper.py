@@ -106,8 +106,8 @@ class Scraper:
                 time.sleep(2)
 
             large_df = pd.concat(dfs, ignore_index=True)
-
-            Scraper.save_data(large_df, "output.csv")
+            large_df["Approval Date"] = pd.to_datetime(large_df["Approval Date"], format="%m/%d/%Y")
+            Scraper.save_data(large_df)
 
         except Exception as e:
             print(f"An error occurred during scraping: {e}")
@@ -140,7 +140,7 @@ class Scraper:
             dfs.append(self.scrapping_function(columns))
 
             large_df = pd.concat(dfs, ignore_index=True)
-            #print(large_df)
+            large_df['Approval Date'] = pd.to_datetime(large_df['Approval Date'], format='%m/%d/%Y')
             Scraper.save_data(large_df)
 
         except Exception as e:
@@ -257,9 +257,6 @@ class DataBase:
                 result = fda_nda.insert_one(record)
 
         print("Data written to the database.")
-
-
-
 
 scraper = Scraper()
 #scraper.scrape_historical_data('2000', 'January')
