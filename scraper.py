@@ -1,6 +1,7 @@
 import os
 import time
 import pandas as pd
+import re
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -139,7 +140,7 @@ class Scraper:
             dfs.append(self.scrapping_function(columns))
 
             large_df = pd.concat(dfs, ignore_index=True)
-
+            #print(large_df)
             Scraper.save_data(large_df)
 
         except Exception as e:
@@ -189,6 +190,24 @@ class Scraper:
         DataBase.save_df_to_db(dataframe)
 
 
+class Helper:
+    @staticmethod
+    def extract_ndc(drug_name):
+        """
+        Extract NDA number from the field Drug Name
+
+        Parameters:
+        drug_name(str): the drug name field of a record
+
+        Returns:
+        str: Extracted NDA number if found, else None
+        """
+        match = re.search(r'#(\d+)', drug_name)
+        if match:
+            return match.group(1)
+        return None
+
+
 class DataBase:
     """
         A class for interacting with a MongoDB database.
@@ -209,13 +228,37 @@ class DataBase:
         fda_nda = db.novel_drugs_approvals
 
         for record in data.to_dict(orient='records'):
-            # Check if the record already exists in the collection
-            existing_record = fda_nda.find_one(record)
+            # Check if a record with the same Approval Date and Drug Name already exists in the collection
+            nda_number = Helper.extract_ndc(record["Drug Name"])
+            query = {"Drug Name": {"$regex": nda_number},
+                     "Approval Date": record["Approval Date"]
+                     }
 
-            if existing_record is None:
+            results = fda_nda.find(query)
+
+            if results:
+                print(
+                    f"Record with Approval Date '{record['Approval Date']}' and Drug Name '{record['Drug Name']}' already exists."
+                )
+                if results != record:
+                    existing_fields = {k: v for k, v in results[0].items() if k != "_id"}
+                    new_fields = {k: v for k, v in record.items() if k != "_id"}
+
+                    if existing_fields != new_fields:
+                        print(f"Differences found in record with NDA Number '{nda_number}':")
+                        for key in new_fields.keys():
+                            if existing_fields.get(key) != new_fields.get(key):
+                                print(
+                                    f"Field '{key}': Existing Value - {existing_fields.get(key)}, New Value - {new_fields.get(key)}")
+                                fda_nda.update_one(query, {"$set": {key: new_fields.get(key)}})
+                            print('record updated')
+
+            else:
                 result = fda_nda.insert_one(record)
 
-        print("data written to db")
+        print("Data written to the database.")
+
+
 
 
 scraper = Scraper()
