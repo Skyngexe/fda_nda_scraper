@@ -21,18 +21,19 @@
 `git clone git@github.com:Skyngexe/fda_nda_scraper.git`
 3. Install the required dependencies listed in requirements.txt
 `pip install -r requirements.txt`
-5. Set up a [MongoDB database](https://www.mongodb.com/) and update the connection URI in the os.env file.
-6. Click add IP address in your cluster 
+5. Set up a [MongoDB database](https://www.mongodb.com/) and update the connection URI in the os.env file
+6. Click add IP address in your cluster
 7. Run the scraper.py script to start scraping and saving data  (uncomment `scraper.scrape_historical_data('2000', 'January')` and comment `scraper.scrape_latest_data()`)
    
 ### Automating Data Scraping on Google Cloud Using Docker: 
 1. Install [Docker Desktop](https://www.docker.com/products/docker-desktop/) and [glcoud CLI](https://cloud.google.com/sdk/docs/install)
-2. Within scraper.py, comment `scraper.scrape_historical_data('2000', 'January')` and uncomment `scraper.scrape_latest_data()` 
-3. Run the following command in the terminal within the repository's directory to build the Docker image:  
+2. Within scraper.py, comment `scraper.scrape_historical_data('2000', 'January')` and uncomment `scraper.scrape_latest_data()`
+3. Add 0.0.0.0/0 to IP Access List Entry 
+4. Run the following command in the terminal within the repository's directory to build the Docker image:  
 `docker build . -f dockerfile.txt`
-4. Set up a repository in google cloud's Artifact Repository with a $${\color{lightgreen} PROJECT-ID}$$
-5. Push the Docker Image to Google Container Registry 
-6. [Create a Cloud Run job wth the Docker Image and schedule trigger](https://cloud.google.com/artifact-registry/docs/docker/pushing-and-pulling#cred-helper) (e.g. daily at 00:00 UTC) 
+5. Set up a repository in google cloud's Artifact Repository with a $${\color{lightgreen} PROJECT-ID}$$
+6. Push the Docker Image to Google Container Registry 
+7. [Create a Cloud Run job wth the Docker Image and schedule trigger](https://cloud.google.com/artifact-registry/docs/docker/pushing-and-pulling#cred-helper) (e.g. daily at 00:00 UTC) 
 
 Contributors:
 Sky Ng 
