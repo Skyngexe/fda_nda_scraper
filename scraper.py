@@ -234,7 +234,7 @@ class DataBase:
                      "Approval Date": record["Approval Date"]
                      }
 
-            results = fda_nda.find(query)
+            results = list(fda_nda.find(query))
 
             if results:
                 print(
