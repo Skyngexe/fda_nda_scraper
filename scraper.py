@@ -30,7 +30,7 @@ class Scraper:
         url (str): The URL of the webpage to load.
         """
         self.driver.get(url)
-        toggle = self.driver.find_element(By.CLASS_NAME, 'toggle')
+        toggle = self.driver.find_element(By.CLASS_NAME, 'toggle collapsed')
         toggle.click()
 
     def click_element(self, element):
